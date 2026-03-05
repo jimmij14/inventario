@@ -8,6 +8,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CategoriaPersonalController;
 use App\Http\Controllers\EstadoEquipoController;
 use App\Http\Controllers\TipoIngresoController;
+use App\Http\Controllers\ProveedorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,3 +25,4 @@ Route::resource('colores', ColorController::class);
 Route::resource('categoria_personal', CategoriaPersonalController::class);
 Route::resource('estado_equipo', EstadoEquipoController::class);
 Route::resource('tipo_ingreso', TipoIngresoController::class);
+Route::resource('proveedores', ProveedorController::class);
