@@ -390,3 +390,8 @@
     <!-- End row -->
 
 @endsection
+
+
+@section('scripts')
+<script src="{{ asset('Admin/js/pages/dashboard.init.js') }}"></script>
+@endsection

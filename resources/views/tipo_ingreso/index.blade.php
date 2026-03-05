@@ -6,16 +6,18 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h4 class="header-title">Listado de Categorías</h4>
 
-                    <button class="btn btn-success" onclick="nuevaCategoria()">
-                    <i class="mdi mdi-plus"></i> Nueva categoría
+                <div class="d-flex justify-content-between mb-3">
+                    <h4 class="header-title">Listado de Tipos de Ingreso</h4>
+
+                    <button class="btn btn-success" onclick="nuevoTipoIngreso()">
+                        <i class="mdi mdi-plus"></i> Nuevo tipo ingreso
                     </button>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-centered table-nowrap mb-0">
+
                         <thead>
                             <tr>
                                 <th>Nombre</th>
@@ -25,25 +27,28 @@
                         </thead>
 
                         <tbody>
-                            @foreach($categorias as $categoria)
+
+                            @foreach($tipos as $tipo)
                             <tr>
-                                <td>{{ $categoria->nombre_categoria }}</td>
-                                <td>{{ $categoria->descripcion }}</td>
+
+                                <td>{{ $tipo->nombre_tipo_ingreso }}</td>
+                                <td>{{ $tipo->descripcion }}</td>
+
                                 <td>
 
                                     <button class="btn btn-warning btn-sm"
-                                    onclick="editarCategoria('{{ $categoria->id_categoria }}',
-                                    '{{ $categoria->nombre_categoria }}',
-                                    '{{ $categoria->descripcion }}')">
-
-                                    <i class="mdi mdi-pencil"></i>
+                                        onclick="editarTipoIngreso(
+                                            '{{ $tipo->id_tipo_ingreso }}',
+                                            '{{ $tipo->nombre_tipo_ingreso }}',
+                                            '{{ $tipo->descripcion }}'
+                                        )">
+                                        <i class="mdi mdi-pencil"></i>
                                     </button>
 
+                                    <form action="{{ route('tipo_ingreso.destroy', $tipo->id_tipo_ingreso) }}"
+                                          method="POST"
+                                          style="display:inline;">
 
-                                    <form action="{{ route('categorias.destroy', $categoria->id_categoria) }}"
-                                        method="POST"
-                                        class="form-eliminar"
-                                        style="display:inline;">
                                         @csrf
                                         @method('DELETE')
 
@@ -52,13 +57,14 @@
                                                 onclick="confirmarEliminacion(this)">
                                             <i class="mdi mdi-delete"></i>
                                         </button>
+
                                     </form>
 
-
-
                                 </td>
+
                             </tr>
                             @endforeach
+
                         </tbody>
 
                     </table>
@@ -71,18 +77,20 @@
 
 
 
-<!-- Modal Categoria -->
-<div class="modal fade" id="modalCategoria" tabindex="-1">
+<!-- Modal -->
+<div class="modal fade" id="modalTipoIngreso" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form id="formCategoria" method="POST">
+            <form id="formTipoIngreso" method="POST">
                 @csrf
+
                 <input type="hidden" id="metodo">
-                <input type="hidden" name="id_categoria" id="id_categoria">
+                <input type="hidden" name="id_tipo_ingreso" id="id_tipo_ingreso">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Nueva Categoría</h5>
+                    <h5 class="modal-title" id="tituloModal">Nuevo Tipo Ingreso</h5>
+
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -91,24 +99,35 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label>Nombre categoría</label>
-                        <input type="text" name="nombre_categoria" id="nombre_categoria" class="form-control" required>
+                        <label>Nombre</label>
+                        <input type="text"
+                               name="nombre_tipo_ingreso"
+                               id="nombre_tipo_ingreso"
+                               class="form-control"
+                               required>
                     </div>
 
                     <div class="form-group">
                         <label>Descripción</label>
-                        <textarea name="descripcion" id="descripcion" class="form-control"></textarea>
+                        <textarea name="descripcion"
+                                  id="descripcion"
+                                  class="form-control"></textarea>
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
+
                     <button type="submit" class="btn btn-primary">
                         Guardar
                     </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
                         Cancelar
                     </button>
+
                 </div>
 
             </form>
@@ -119,60 +138,70 @@
 
 
 
-<!-- script para confirmar eliminacion -->
 <script>
-function confirmarEliminacion(boton) {
+
+function confirmarEliminacion(boton){
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "Esta acción no se puede deshacer",
-        type: 'warning',   
+        text: 'Esta acción no se puede deshacer',
+        type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar'
-    }).then(function(result) {
-        if (result.value) {
+    }).then(function(result){
+
+        if(result.value){
             boton.closest('form').submit();
         }
+
     });
 
 }
+
 </script>
 
-<!-- script para nueva categoria -->
+
+
 <script>
-function nuevaCategoria() {
 
-    $('#tituloModal').text('Nueva Categoría');
+function nuevoTipoIngreso(){
 
-    $('#formCategoria').attr('action','/categorias');
+    $('#tituloModal').text('Nuevo Tipo Ingreso');
+
+    $('#formTipoIngreso').attr('action','/tipo_ingreso');
 
     $('#metodo').html('');
 
-    $('#id_categoria').val('');
-    $('#nombre_categoria').val('');
+    $('#id_tipo_ingreso').val('');
+    $('#nombre_tipo_ingreso').val('');
     $('#descripcion').val('');
 
-    $('#modalCategoria').modal('show');
+    $('#modalTipoIngreso').modal('show');
+
 }
+
 </script>
 
-<!-- script para editar categoria -->
+
+
 <script>
-function editarCategoria(id,nombre,descripcion){
 
-    $('#tituloModal').text('Editar Categoría');
+function editarTipoIngreso(id,nombre,descripcion){
 
-    $('#formCategoria').attr('action','/categorias/'+id);
+    $('#tituloModal').text('Editar Tipo Ingreso');
+
+    $('#formTipoIngreso').attr('action','/tipo_ingreso/'+id);
 
     $('#metodo').html('@method("PUT")');
 
-    $('#id_categoria').val(id);
-    $('#nombre_categoria').val(nombre);
+    $('#id_tipo_ingreso').val(id);
+    $('#nombre_tipo_ingreso').val(nombre);
     $('#descripcion').val(descripcion);
 
-    $('#modalCategoria').modal('show');
+    $('#modalTipoIngreso').modal('show');
 
 }
+
 </script>
 
 @endsection

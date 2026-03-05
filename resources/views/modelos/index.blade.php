@@ -6,11 +6,12 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h4 class="header-title">Listado de Categorías</h4>
 
-                    <button class="btn btn-success" onclick="nuevaCategoria()">
-                    <i class="mdi mdi-plus"></i> Nueva categoría
+                <div class="d-flex justify-content-between mb-3">
+                    <h4 class="header-title">Listado de Modelos</h4>
+
+                    <button class="btn btn-success" onclick="nuevoModelo()">
+                        <i class="mdi mdi-plus"></i> Nuevo modelo
                     </button>
                 </div>
 
@@ -25,40 +26,48 @@
                         </thead>
 
                         <tbody>
-                            @foreach($categorias as $categoria)
+
+                            @foreach($modelos as $modelo)
                             <tr>
-                                <td>{{ $categoria->nombre_categoria }}</td>
-                                <td>{{ $categoria->descripcion }}</td>
+
+                                <td>{{ $modelo->nombre_modelo }}</td>
+                                <td>{{ $modelo->descripcion }}</td>
+
                                 <td>
 
                                     <button class="btn btn-warning btn-sm"
-                                    onclick="editarCategoria('{{ $categoria->id_categoria }}',
-                                    '{{ $categoria->nombre_categoria }}',
-                                    '{{ $categoria->descripcion }}')">
+                                        onclick="editarModelo(
+                                            '{{ $modelo->id_modelo }}',
+                                            '{{ $modelo->nombre_modelo }}',
+                                            '{{ $modelo->descripcion }}'
+                                        )">
 
-                                    <i class="mdi mdi-pencil"></i>
+                                        <i class="mdi mdi-pencil"></i>
                                     </button>
 
 
-                                    <form action="{{ route('categorias.destroy', $categoria->id_categoria) }}"
+                                    <form action="{{ route('modelos.destroy',$modelo->id_modelo) }}"
                                         method="POST"
                                         class="form-eliminar"
                                         style="display:inline;">
+
                                         @csrf
                                         @method('DELETE')
 
                                         <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="confirmarEliminacion(this)">
+                                            class="btn btn-danger btn-sm"
+                                            onclick="confirmarEliminacion(this)">
+
                                             <i class="mdi mdi-delete"></i>
                                         </button>
+
                                     </form>
 
-
-
                                 </td>
+
                             </tr>
                             @endforeach
+
                         </tbody>
 
                     </table>
@@ -71,18 +80,20 @@
 
 
 
-<!-- Modal Categoria -->
-<div class="modal fade" id="modalCategoria" tabindex="-1">
+<!-- Modal Modelo -->
+<div class="modal fade" id="modalModelo" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form id="formCategoria" method="POST">
+            <form id="formModelo" method="POST">
+
                 @csrf
                 <input type="hidden" id="metodo">
-                <input type="hidden" name="id_categoria" id="id_categoria">
+                <input type="hidden" name="id_modelo" id="id_modelo">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Nueva Categoría</h5>
+                    <h5 class="modal-title" id="tituloModal">Nuevo Modelo</h5>
+
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -91,24 +102,39 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label>Nombre categoría</label>
-                        <input type="text" name="nombre_categoria" id="nombre_categoria" class="form-control" required>
+                        <label>Nombre modelo</label>
+
+                        <input type="text"
+                            name="nombre_modelo"
+                            id="nombre_modelo"
+                            class="form-control"
+                            required>
                     </div>
 
                     <div class="form-group">
                         <label>Descripción</label>
-                        <textarea name="descripcion" id="descripcion" class="form-control"></textarea>
+
+                        <textarea
+                            name="descripcion"
+                            id="descripcion"
+                            class="form-control">
+                        </textarea>
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
+
                     <button type="submit" class="btn btn-primary">
                         Guardar
                     </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+
+                    <button type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">
                         Cancelar
                     </button>
+
                 </div>
 
             </form>
@@ -119,58 +145,64 @@
 
 
 
-<!-- script para confirmar eliminacion -->
+<!-- Script confirmar eliminación -->
 <script>
 function confirmarEliminacion(boton) {
 
     Swal.fire({
         title: '¿Estás seguro?',
         text: "Esta acción no se puede deshacer",
-        type: 'warning',   
+        type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar'
     }).then(function(result) {
+
         if (result.value) {
             boton.closest('form').submit();
         }
+
     });
 
 }
 </script>
 
-<!-- script para nueva categoria -->
+
+<!-- Script nuevo modelo -->
 <script>
-function nuevaCategoria() {
+function nuevoModelo() {
 
-    $('#tituloModal').text('Nueva Categoría');
+    $('#tituloModal').text('Nuevo Modelo');
 
-    $('#formCategoria').attr('action','/categorias');
+    $('#formModelo').attr('action','/modelos');
 
     $('#metodo').html('');
 
-    $('#id_categoria').val('');
-    $('#nombre_categoria').val('');
+    $('#id_modelo').val('');
+    $('#nombre_modelo').val('');
     $('#descripcion').val('');
 
-    $('#modalCategoria').modal('show');
+    $('#modalModelo').modal('show');
+
 }
 </script>
 
-<!-- script para editar categoria -->
+
+
+<!-- Script editar modelo -->
 <script>
-function editarCategoria(id,nombre,descripcion){
+function editarModelo(id,nombre,descripcion){
 
-    $('#tituloModal').text('Editar Categoría');
+    $('#tituloModal').text('Editar Modelo');
 
-    $('#formCategoria').attr('action','/categorias/'+id);
+    $('#formModelo').attr('action','/modelos/'+id);
 
     $('#metodo').html('@method("PUT")');
 
-    $('#id_categoria').val(id);
-    $('#nombre_categoria').val(nombre);
+    $('#id_modelo').val(id);
+    $('#nombre_modelo').val(nombre);
     $('#descripcion').val(descripcion);
 
-    $('#modalCategoria').modal('show');
+    $('#modalModelo').modal('show');
 
 }
 </script>

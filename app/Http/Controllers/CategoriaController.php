@@ -7,17 +7,14 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    // Mostrar lista de categorias
     public function index()
     {
         $categorias = Categoria::all();
         return view('categorias.index', compact('categorias'));
     }
 
-    public function create()
-    {
-        return view('categorias.create');
-    }
-
+    // Guardar nueva categoria
     public function store(Request $request)
     {
         $request->validate([
@@ -27,15 +24,11 @@ class CategoriaController extends Controller
 
         Categoria::create($request->all());
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')
+            ->with('success', 'Categoría creada correctamente');
     }
 
-    public function edit($id)
-    {
-        $categoria = Categoria::findOrFail($id);
-        return view('categorias.edit', compact('categoria'));
-    }
-
+    // Actualizar categoria
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -46,14 +39,17 @@ class CategoriaController extends Controller
         $categoria = Categoria::findOrFail($id);
         $categoria->update($request->all());
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')
+            ->with('success', 'Categoría actualizada correctamente');
     }
 
+    // Eliminar categoria
     public function destroy($id)
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->delete();
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')
+            ->with('success', 'Categoría eliminada correctamente');
     }
 }

@@ -7,10 +7,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
-                    <h4 class="header-title">Listado de Categorías</h4>
+                    <h4 class="header-title">Listado de Marcas</h4>
 
-                    <button class="btn btn-success" onclick="nuevaCategoria()">
-                    <i class="mdi mdi-plus"></i> Nueva categoría
+                    <button class="btn btn-success" onclick="nuevaMarca()">
+                    <i class="mdi mdi-plus"></i> Nueva marca
                     </button>
                 </div>
 
@@ -25,22 +25,22 @@
                         </thead>
 
                         <tbody>
-                            @foreach($categorias as $categoria)
+                            @foreach($marcas as $marca)
                             <tr>
-                                <td>{{ $categoria->nombre_categoria }}</td>
-                                <td>{{ $categoria->descripcion }}</td>
+                                <td>{{ $marca->nombre_marca }}</td>
+                                <td>{{ $marca->descripcion }}</td>
                                 <td>
 
                                     <button class="btn btn-warning btn-sm"
-                                    onclick="editarCategoria('{{ $categoria->id_categoria }}',
-                                    '{{ $categoria->nombre_categoria }}',
-                                    '{{ $categoria->descripcion }}')">
+                                    onclick="editarMarca('{{ $marca->id_marca }}',
+                                    '{{ $marca->nombre_marca }}',
+                                    '{{ $marca->descripcion }}')">
 
                                     <i class="mdi mdi-pencil"></i>
                                     </button>
 
 
-                                    <form action="{{ route('categorias.destroy', $categoria->id_categoria) }}"
+                                    <form action="{{ route('marcas.destroy', $marca->id_marca) }}"
                                         method="POST"
                                         class="form-eliminar"
                                         style="display:inline;">
@@ -53,8 +53,6 @@
                                             <i class="mdi mdi-delete"></i>
                                         </button>
                                     </form>
-
-
 
                                 </td>
                             </tr>
@@ -71,18 +69,18 @@
 
 
 
-<!-- Modal Categoria -->
-<div class="modal fade" id="modalCategoria" tabindex="-1">
+<!-- Modal Marca -->
+<div class="modal fade" id="modalMarca" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form id="formCategoria" method="POST">
+            <form id="formMarca" method="POST">
                 @csrf
                 <input type="hidden" id="metodo">
-                <input type="hidden" name="id_categoria" id="id_categoria">
+                <input type="hidden" name="id_marca" id="id_marca">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Nueva Categoría</h5>
+                    <h5 class="modal-title" id="tituloModal">Nueva Marca</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -91,8 +89,8 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label>Nombre categoría</label>
-                        <input type="text" name="nombre_categoria" id="nombre_categoria" class="form-control" required>
+                        <label>Nombre marca</label>
+                        <input type="text" name="nombre_marca" id="nombre_marca" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -138,39 +136,39 @@ function confirmarEliminacion(boton) {
 }
 </script>
 
-<!-- script para nueva categoria -->
+<!-- script para nueva marca -->
 <script>
-function nuevaCategoria() {
+function nuevaMarca() {
 
-    $('#tituloModal').text('Nueva Categoría');
+    $('#tituloModal').text('Nueva Marca');
 
-    $('#formCategoria').attr('action','/categorias');
+    $('#formMarca').attr('action','/marcas');
 
     $('#metodo').html('');
 
-    $('#id_categoria').val('');
-    $('#nombre_categoria').val('');
+    $('#id_marca').val('');
+    $('#nombre_marca').val('');
     $('#descripcion').val('');
 
-    $('#modalCategoria').modal('show');
+    $('#modalMarca').modal('show');
 }
 </script>
 
-<!-- script para editar categoria -->
+<!-- script para editar marca -->
 <script>
-function editarCategoria(id,nombre,descripcion){
+function editarMarca(id,nombre,descripcion){
 
-    $('#tituloModal').text('Editar Categoría');
+    $('#tituloModal').text('Editar Marca');
 
-    $('#formCategoria').attr('action','/categorias/'+id);
+    $('#formMarca').attr('action','/marcas/'+id);
 
     $('#metodo').html('@method("PUT")');
 
-    $('#id_categoria').val(id);
-    $('#nombre_categoria').val(nombre);
+    $('#id_marca').val(id);
+    $('#nombre_marca').val(nombre);
     $('#descripcion').val(descripcion);
 
-    $('#modalCategoria').modal('show');
+    $('#modalMarca').modal('show');
 
 }
 </script>

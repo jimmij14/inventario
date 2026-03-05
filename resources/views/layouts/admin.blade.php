@@ -5,6 +5,7 @@
     @include('partials.head')
 </head>
 
+
 <body>
 
     <div id="wrapper">
@@ -14,7 +15,7 @@
         @include('partials.sidebar')
 
         <div class="content-page">
-            <div class="content">
+            <div class="content pt-3">
                 <div class="container-fluid">
 
                     @yield('content')
@@ -30,5 +31,7 @@
 
     @include('partials.scripts')
 
+    @yield('scripts')
+    
 </body>
 </html>
