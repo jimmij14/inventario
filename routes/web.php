@@ -9,6 +9,9 @@ use App\Http\Controllers\CategoriaPersonalController;
 use App\Http\Controllers\EstadoEquipoController;
 use App\Http\Controllers\TipoIngresoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\CategoriaEquipoController;
+use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\AreaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,3 +29,6 @@ Route::resource('categoria_personal', CategoriaPersonalController::class);
 Route::resource('estado_equipo', EstadoEquipoController::class);
 Route::resource('tipo_ingreso', TipoIngresoController::class);
 Route::resource('proveedores', ProveedorController::class);
+Route::resource('categoria_equipos', CategoriaEquipoController::class);
+route::resource('personal', PersonalController::class);
+Route::resource('areas', AreaController::class);

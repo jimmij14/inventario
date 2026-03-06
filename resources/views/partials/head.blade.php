@@ -9,6 +9,11 @@
 
 <link href="{{ asset('Admin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
 
+
+<link href="{{ asset('Admin/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
+
+
 <link href="{{ asset('Admin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('Admin/css/icons.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('Admin/css/app.min.css') }}" rel="stylesheet" type="text/css">
+
