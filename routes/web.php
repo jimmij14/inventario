@@ -12,6 +12,7 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\CategoriaEquipoController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\EquipoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,3 +33,7 @@ Route::resource('proveedores', ProveedorController::class);
 Route::resource('categoria_equipos', CategoriaEquipoController::class);
 route::resource('personal', PersonalController::class);
 Route::resource('areas', AreaController::class);
+Route::resource('equipos', EquipoController::class);
+
+
+
