@@ -17,14 +17,24 @@ use App\Http\Controllers\EquipoInventarioController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
+
+Auth::routes();
 
 Route::get('/administrador', function () {
     return view('administrador.dashboard');
 });
 
-Route::resource('categorias', CategoriaController::class);
+
+  
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+  
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    
+    Route::resource('categorias', CategoriaController::class);
 Route::resource('marcas', MarcaController::class);
 Route::resource('modelos', ModeloController::class);
 Route::resource('colores', ColorController::class);
@@ -37,5 +47,5 @@ route::resource('personal', PersonalController::class);
 Route::resource('areas', AreaController::class);
 Route::resource('equipos', EquipoController::class);
 Route::resource('inventario', EquipoInventarioController::class);
-
+});
 
