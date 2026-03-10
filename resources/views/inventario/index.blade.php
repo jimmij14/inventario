@@ -20,18 +20,63 @@
 
                 </div>
 
+                <form method="GET" action="{{ route('inventario.index') }}">
+
+                <div class="row mb-3">
+
+                    <div class="col-md-3">
+                        <input type="text" name="buscar" class="form-control"
+                        placeholder="Buscar código inventario"
+                        value="{{ request('buscar') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="area" class="form-control">
+                            <option value="">Todas las áreas</option>
+                            @foreach($areas as $area)
+                                <option value="{{ $area->id_area }}"
+                                {{ request('area') == $area->id_area ? 'selected' : '' }}>
+                                {{ $area->nombre_area }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="estado" class="form-control">
+                            <option value="">Todos los estados</option>
+                            @foreach($estados as $estado)
+                                <option value="{{ $estado->id_estado_equipo }}"
+                                {{ request('estado') == $estado->id_estado_equipo ? 'selected' : '' }}>
+                                {{ $estado->nombre_estado }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <button class="btn btn-primary">
+                            Buscar
+                        </button>
+                    </div>
+
+                </div>
+
+                </form>
+
                 <div class="table-responsive">
 
-                    <table class="table table-centered table-nowrap mb-0">
-
-                        <thead>
+                    <table id="tablaInventario" class="table table-centered table-nowrap mb-0">
                             <tr>
                                 <th>Código</th>
                                 <th>Equipo</th>
                                 <th>Área</th>
+                                <th>Marca</th>
                                 <th>Estado</th>
                                 <th>Proveedor</th>
+                                <th>Tipo ingreso</th>
                                 <th>Precio</th>
+                                <TH>Tipo de Documento</TH>
                                 <th>Documento</th>
                                 <th width="150">Acciones</th>
                             </tr>
@@ -49,11 +94,25 @@
 
                                 <td>{{ $inv->area->nombre_area ?? '' }}</td>
 
+                                <td>{{ $inv->equipo->marca->nombre_marca ?? '' }}</td>
+
                                 <td>{{ $inv->estado->nombre_estado ?? '' }}</td>
 
                                 <td>{{ $inv->proveedor->nombre_comercial ?? '' }}</td>
 
-                                <td>{{ $inv->precio_compra }}</td>
+                                <td>{{ $inv->tipoIngreso->nombre_tipo_ingreso ?? '' }}</td>
+
+                                <td>
+                                @if($inv->precio_compra)
+                                    S/ {{ number_format($inv->precio_compra,2) }}
+                                @elseif($inv->tipoIngreso->nombre_tipo_ingreso == 'Donación')
+                                    Donación
+                                @else
+                                    —
+                                @endif
+                                </td>
+
+                                <td>{{ $inv->tipo_documento }}</td>
 
                                 <td>
 

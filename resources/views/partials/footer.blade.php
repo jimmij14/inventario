@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                2015 - 2020 &copy; Velonic theme by <a href="">Coderthemes</a>
+                Universidad para el Desarrollo Andino - UDEA &copy; {{ date('Y') }}. Todos los derechos reservados.
             </div>
         </div>
     </div>

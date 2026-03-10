@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Auth;
 
 class EquipoInventarioController extends Controller
 {
+    
 
-    public function index()
+    public function index(Request $request)
     {
         $inventarios = EquipoInventario::with([
             'equipo',
@@ -22,7 +23,26 @@ class EquipoInventarioController extends Controller
             'estado',
             'tipoIngreso',
             'proveedor'
-        ])->get();
+        ]);
+
+        // BUSCAR POR CODIGO INVENTARIO
+        if($request->filled('buscar')){
+            $inventarios->where('codigo_inventario','LIKE','%'.$request->buscar.'%');
+        }
+
+        // FILTRO POR AREA
+        if($request->filled('area')){
+            $inventarios->where('id_area',$request->area);
+        }
+
+        // FILTRO POR ESTADO
+        if($request->filled('estado')){
+            $inventarios->where('id_estado_equipo',$request->estado);
+        }
+
+        // EJECUTAR CONSULTA
+        $inventarios = $inventarios->get();
+
 
         $equipos = Equipo::all();
         $areas = Area::all();
@@ -39,7 +59,7 @@ class EquipoInventarioController extends Controller
             'proveedores'
         ));
     }
-
+        
 
     public function store(Request $request)
     {
@@ -111,6 +131,7 @@ class EquipoInventarioController extends Controller
         $inventario->save();
 
         return redirect()->back()->with('success','Equipo registrado correctamente');
+
 
     }
 
