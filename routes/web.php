@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ModeloController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\EquipoInventarioController;
+
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -49,3 +53,7 @@ Route::resource('equipos', EquipoController::class);
 Route::resource('inventario', EquipoInventarioController::class);
 });
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

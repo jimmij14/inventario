@@ -1,39 +1,51 @@
 @extends('layouts.admin')
 
 @section('content')
+
 <div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2> Show User</h2>
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <h4 class="header-title">Detalle del Usuario</h4>
+
+                    <a class="btn btn-secondary"
+                       href="{{ route('users.index') }}">
+                        Volver
+                    </a>
+
+                </div>
+
+                <div class="form-group mb-3">
+                    <strong>Nombre:</strong>
+                    <p class="form-control">{{ $user->name }}</p>
+                </div>
+
+                <div class="form-group mb-3">
+                    <strong>Email:</strong>
+                    <p class="form-control">{{ $user->email }}</p>
+                </div>
+
+                <div class="form-group mb-3">
+                    <strong>Rol:</strong>
+
+                    @if(!empty($user->getRoleNames()))
+                        @foreach($user->getRoleNames() as $v)
+                            <span class="badge badge-info">{{ $v }}</span>
+                        @endforeach
+                    @endif
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
-        </div>
+
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Name:</strong>
-            {{ $user->name }}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Email:</strong>
-            {{ $user->email }}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Roles:</strong>
-            @if(!empty($user->getRoleNames()))
-                @foreach($user->getRoleNames() as $v)
-                    <label class="badge badge-success">{{ $v }}</label>
-                @endforeach
-            @endif
-        </div>
-    </div>
-</div>
 @endsection

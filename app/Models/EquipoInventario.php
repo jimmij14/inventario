@@ -22,7 +22,7 @@ class EquipoInventario extends Model
         'id_estado_equipo',
         'id_tipo_ingreso',
         'id_proveedor',
-        'id_usuario',
+        'user_id',
         'precio_compra',
         'fecha_compra',
         'tipo_documento',
@@ -57,8 +57,8 @@ class EquipoInventario extends Model
         return $this->belongsTo(Proveedor::class, 'id_proveedor');
     }
 
-    public function usuario()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

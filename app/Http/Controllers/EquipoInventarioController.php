@@ -22,7 +22,8 @@ class EquipoInventarioController extends Controller
             'area',
             'estado',
             'tipoIngreso',
-            'proveedor'
+            'proveedor',
+            'user'
         ]);
 
         // BUSCAR POR CODIGO INVENTARIO
@@ -88,7 +89,7 @@ class EquipoInventarioController extends Controller
 
         $numero_formateado = str_pad($numero,3,"0",STR_PAD_LEFT);
 
-        $codigo = $abreviatura.'-'.$numero_formateado;
+        $codigo = $abreviatura.$numero_formateado;
 
 
         //SUBIR DOCUMENTO
@@ -124,8 +125,8 @@ class EquipoInventarioController extends Controller
         $inventario->documento = $nombre_documento;
         $inventario->observaciones = $request->observaciones;
 
-        //$inventario->id_usuario = Auth::id(); 77ORIGIANL-SE USARA CUANDO ESTE LISTO EL LOGIN
-        $inventario->id_usuario = 2; //SOLO DE PRUEBA HASTA HACER TABLA USUARIO
+        $inventario->user_id = Auth::id();
+
         $inventario->fecha_registro = now();
 
         $inventario->save();

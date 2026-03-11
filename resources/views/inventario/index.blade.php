@@ -500,7 +500,7 @@ $('#id_area').on('change', function(){
     let abreviatura = $(this).find(':selected').data('abreviatura');
 
     if(abreviatura){
-        $('#codigo_preview').val(abreviatura + '-001');
+        $('#codigo_preview').val(abreviatura + '001');
     }
 
 });

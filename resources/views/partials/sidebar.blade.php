@@ -8,8 +8,15 @@
 
                 <li class="menu-title">Menú</li>
 
-                <!-- MANTENIMIENTO -->
+                <!-- HOME -->
+                <li>
+                    <a href="{{ route('home') }}" class="waves-effect">
+                        <i class="ion-md-home"></i>
+                        <span> Inicio </span>
+                    </a>
+                </li>
 
+                <!-- MANTENIMIENTO -->
                 <li>
                     <a href="javascript: void(0);" class="waves-effect">
                         <i class="ion-md-settings"></i>
@@ -81,7 +88,8 @@
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
-
+                        
+                        <li><a href="{{ route('users.index') }}">Usuarios</a></li>
 
 
                     </ul>
