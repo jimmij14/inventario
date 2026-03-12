@@ -11,6 +11,9 @@ use App\Models\TipoIngreso;
 use App\Models\Proveedor;
 use Illuminate\Support\Facades\Auth;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 class EquipoInventarioController extends Controller
 {
     
@@ -187,5 +190,38 @@ class EquipoInventarioController extends Controller
         return redirect()->back()->with('success','Equipo eliminado');
 
     }
+
+
+
+
+
+    public function imprimirCodigos(Request $request)
+    {
+
+        $inventarios = EquipoInventario::query();
+
+        // FILTRO BUSCAR
+        if($request->filled('buscar')){
+            $inventarios->where('codigo_inventario','LIKE','%'.$request->buscar.'%');
+        }
+
+        // FILTRO AREA
+        if($request->filled('area')){
+            $inventarios->where('id_area',$request->area);
+        }
+
+        // FILTRO ESTADO
+        if($request->filled('estado')){
+            $inventarios->where('id_estado_equipo',$request->estado);
+        }
+
+        $inventarios = $inventarios->get();
+
+        $pdf = Pdf::loadView('inventario.codigos', compact('inventarios'));
+
+        return $pdf->stream('codigos_inventario.pdf');
+    }
+
+
 
 }

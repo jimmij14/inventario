@@ -56,8 +56,14 @@
 
                     <div class="col-md-3">
                         <button class="btn btn-primary">
-                            Buscar
+                             <i class="mdi mdi-magnify"></i>Buscar
                         </button>
+
+                        <a href="{{ route('inventario.codigos', request()->query()) }}"
+                            class="btn btn-primary"
+                            target="_blank">
+                            <i class="mdi mdi-barcode"></i> Imprimir códigos
+                         </a>
                     </div>
 
                 </div>

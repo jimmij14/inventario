@@ -50,6 +50,11 @@ Route::resource('categoria_equipos', CategoriaEquipoController::class);
 route::resource('personal', PersonalController::class);
 Route::resource('areas', AreaController::class);
 Route::resource('equipos', EquipoController::class);
+
+Route::get('/inventario/codigos', [EquipoInventarioController::class, 'imprimirCodigos'])
+    ->name('inventario.codigos');
+
+
 Route::resource('inventario', EquipoInventarioController::class);
 });
 
