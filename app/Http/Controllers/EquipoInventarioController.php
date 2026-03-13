@@ -20,6 +20,8 @@ class EquipoInventarioController extends Controller
 
     public function index(Request $request)
     {
+        $estadoBaja = EstadoEquipo::where('nombre_estado','Baja')->first();
+
         $inventarios = EquipoInventario::with([
             'equipo',
             'area',
@@ -27,7 +29,7 @@ class EquipoInventarioController extends Controller
             'tipoIngreso',
             'proveedor',
             'user'
-        ]);
+        ])->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
 
         // BUSCAR POR CODIGO INVENTARIO
         if($request->filled('buscar')){
@@ -50,7 +52,8 @@ class EquipoInventarioController extends Controller
 
         $equipos = Equipo::all();
         $areas = Area::all();
-        $estados = EstadoEquipo::all();
+        //$estados = EstadoEquipo::all();//estados normales
+        $estados = EstadoEquipo::where('nombre_estado','!=','Baja')->get();//excluye estado baja
         $tiposIngreso = TipoIngreso::all();
         $proveedores = Proveedor::all();
 
@@ -198,7 +201,11 @@ class EquipoInventarioController extends Controller
     public function imprimirCodigos(Request $request)
     {
 
-        $inventarios = EquipoInventario::query();
+        // OBTENER ID DEL ESTADO BAJA
+        $estadoBaja = EstadoEquipo::where('nombre_estado','Baja')->first();
+
+        $inventarios = EquipoInventario::query()
+            ->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
 
         // FILTRO BUSCAR
         if($request->filled('buscar')){

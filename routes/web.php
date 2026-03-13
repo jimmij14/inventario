@@ -19,6 +19,8 @@ use App\Http\Controllers\EquipoInventarioController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\BajaController;
+
 
 Route::get('/', function () {
     return view('auth/login');
@@ -62,3 +64,11 @@ Route::resource('inventario', EquipoInventarioController::class);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+Route::post('/bajas', [BajaController::class, 'store'])->name('bajas.store');
+Route::get('/bajas', [BajaController::class,'index'])->name('bajas.index');
+Route::put('/bajas/restaurar/{id}', [BajaController::class, 'restaurar'])
+    ->name('bajas.restaurar');
+

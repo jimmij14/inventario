@@ -61,4 +61,12 @@ class EquipoInventario extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+
+    public function baja()
+    {
+        return $this->hasOne(Baja::class, 'id_equipo_inventario');
+    }
+
+
 }

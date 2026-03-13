@@ -58,7 +58,8 @@
                         <li><a href="{{ route('equipos.index') }}">Equipos</a></li>
 
                         <li><a href="{{ route('inventario.index') }}">Inventario</a></li>
-                        
+
+                        <li><a href="{{ route('bajas.index') }}">Bajas</a></li>
 
                     </ul>
                 </li>

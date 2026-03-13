@@ -154,6 +154,12 @@
                                         <i class="mdi mdi-pencil"></i>
                                     </button>
 
+                                    <button class="btn btn-dark btn-sm"
+                                        onclick="abrirModalBaja('{{ $inv->id_equipo_inventario }}')">
+                                        <i class="mdi mdi-close-circle"></i>
+                                    </button>
+
+
                                     <form action="{{ route('inventario.destroy',$inv->id_equipo_inventario) }}"
                                         method="POST"
                                         style="display:inline;">
@@ -419,7 +425,97 @@
 
 </div>
 
+<!-- MODAL BAJA -->
+
+<div class="modal fade" id="modalBaja" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form method="POST" action="{{ route('bajas.store') }}">
+
+                @csrf
+
+                <input type="hidden"
+                       name="id_equipo_inventario"
+                       id="id_equipo_inventario_baja">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">Dar de baja equipo</h5>
+
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+
+                        <label>Fecha de baja</label>
+
+                        <input type="date"
+                               name="fecha_baja"
+                               id="fecha_baja"
+                               class="form-control"
+                               required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Descripción</label>
+
+                        <textarea name="descripcion"
+                                  class="form-control"
+                                  required></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar baja
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
 <script>
+
+function abrirModalBaja(id){
+
+    $('#id_equipo_inventario_baja').val(id);
+
+    let hoy = new Date().toISOString().split('T')[0];
+    $('#fecha_baja').val(hoy);
+
+    $('#modalBaja').modal('show');
+
+}
+
 
 function confirmarEliminacion(boton){
 

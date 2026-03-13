@@ -1,82 +1,100 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
 
-<style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    font-family: Arial, sans-serif;
-}
+        /* ETIQUETA */
+        .etiqueta {
+            width: 30%;
+            height: 90px;
+            border: 1px solid #000;
+            padding: 5px;
+            margin: 1%;
+            display: inline-block;
+            vertical-align: top;
+        }
 
-.etiqueta{
-    width:31%;
-    height:150px;
-    border:1px solid #000;
-    padding:8px;
-    margin:1%;
-    display:inline-block;
-    text-align:center;
-    vertical-align:top;
-}
+        /* TABLA INTERNA */
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla td {
+            vertical-align: middle;
+        }
+
+        /* LOGO */
+        .logo {
+            width: 70px;
+            height: auto;
+        }
+
+        /* NOMBRE EQUIPO */
+        .nombre {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3px;
+        }
+
+        /* CODIGO DE BARRAS */
+        .barcode{
+            text-align:center;
+        }
+
+        .barcode div{
+            margin: 0 auto;
+        }
 
 
-.logo{
-    width:80px;
-}
+        /* CODIGO TEXTO */
+        .codigo {
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+        }
 
-.titulo{
-    font-size:10px;
-    font-weight:bold;
-}
-
-.codigo{
-    font-size:12px;
-    font-weight:bold;
-    margin-top:4px;
-}
-
-.barcode{
-    margin-top:6px;
-    display:flex;
-    justify-content:center;
-}
-
-
-</style>
-
+        /* FECHA */
+        .fecha {
+            font-size: 9px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-
-@foreach($inventarios as $inv)
-
-<div class="etiqueta">
-
-    <img src="{{ public_path('Admin/images/logo-udea.png') }}" class="logo">
-
-    <div class="titulo">
-        INVENTARIO
-    </div>
-
-    <div style="font-size:15px;">
-        <b>{{ $inv->equipo->nombre_equipo ?? '' }}</b>
-    </div>
-
-    <div class="barcode">
-        <div style="margin:0 auto; display:table;">
-            {!! DNS1D::getBarcodeHTML($inv->codigo_inventario, 'C128') !!}
+    @foreach($inventarios as $inv)
+        <div class="etiqueta">
+            <table class="tabla">
+                <tr>
+                    <td style="width:30%; text-align:center;">
+                        <img src="{{ public_path('Admin/images/logo-udea.png') }}" class="logo">
+                    </td>
+                    <td>
+                        <div class="nombre">
+                            {{ $inv->equipo->nombre_equipo ?? '' }}
+                        </div>
+                        <div class="barcode">
+                            {!! DNS1D::getBarcodeHTML($inv->codigo_inventario, 'C128',1,40) !!}
+                        </div>
+                        <div class="codigo">
+                            {{ $inv->codigo_inventario }}
+                        </div>
+                        <div class="fecha">
+                            {{ \Carbon\Carbon::now()->locale('es')->translatedFormat('F Y') }}
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </div>
-
-
-    <div class="codigo">
-        {{ $inv->codigo_inventario }}
-    </div>
-
-</div>
-
-@endforeach
-
+    @endforeach
 </body>
+
 </html>
