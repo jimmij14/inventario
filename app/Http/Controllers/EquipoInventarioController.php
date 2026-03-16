@@ -230,5 +230,21 @@ class EquipoInventarioController extends Controller
     }
 
 
+    public function show($id)
+    {
+
+        $inventario = EquipoInventario::with([
+            'equipo',
+            'area',
+            'estado',
+            'tipoIngreso',
+            'proveedor',
+            'user'
+        ])->findOrFail($id);
+
+        return view('inventario.show', compact('inventario'));
+
+    }
+
 
 }

@@ -53,6 +53,11 @@ route::resource('personal', PersonalController::class);
 Route::resource('areas', AreaController::class);
 Route::resource('equipos', EquipoController::class);
 
+
+Route::get('/inventario/{id}', [EquipoInventarioController::class, 'show'])
+    ->name('inventario.show');
+
+    
 Route::get('/inventario/codigos', [EquipoInventarioController::class, 'imprimirCodigos'])
     ->name('inventario.codigos');
 

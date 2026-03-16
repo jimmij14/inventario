@@ -11,16 +11,35 @@ use Illuminate\Support\Facades\Auth;
 
 class BajaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
-        $bajas = Baja::with([
+        $query = Baja::with([
             'inventario.equipo',
             'inventario.area',
             'usuario'
-        ])->get();
+        ]);
 
-        return view('bajas.index', compact('bajas'));
+        // BUSCAR POR CODIGO
+        if ($request->buscar) {
+            $query->whereHas('inventario', function ($q) use ($request) {
+                $q->where('codigo_inventario', 'LIKE', '%' . $request->buscar . '%');
+            });
+        }
+
+        // FILTRAR POR AREA
+        if ($request->area) {
+            $query->whereHas('inventario', function ($q) use ($request) {
+                $q->where('id_area', $request->area);
+            });
+        }
+
+        $bajas = $query->get();
+
+        // AREAS PARA EL FILTRO
+        $areas = \App\Models\Area::all();
+
+        return view('bajas.index', compact('bajas','areas'));
 
     }
 
