@@ -34,7 +34,7 @@ class BajaController extends Controller
             });
         }
 
-        $bajas = $query->get();
+        $bajas = $query->paginate(10);
 
         // AREAS PARA EL FILTRO
         $areas = \App\Models\Area::all();

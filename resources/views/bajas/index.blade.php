@@ -159,6 +159,8 @@
 
                     </table>
 
+                    {{ $bajas->links() }}
+
                 </div>
 
             </div>

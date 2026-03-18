@@ -188,6 +188,8 @@
 
                     </table>
 
+                    {{ $inventarios->links() }}
+
                 </div>
 
             </div>

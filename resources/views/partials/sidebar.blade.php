@@ -61,6 +61,8 @@
 
                         <li><a href="{{ route('bajas.index') }}">Bajas</a></li>
 
+                        <li><a href="{{ route('movimientos.index') }}">Movimientos</a></li>
+
                     </ul>
                 </li>
 

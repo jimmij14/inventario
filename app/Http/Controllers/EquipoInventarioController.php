@@ -47,7 +47,7 @@ class EquipoInventarioController extends Controller
         }
 
         // EJECUTAR CONSULTA
-        $inventarios = $inventarios->get();
+        $inventarios = $inventarios->paginate(10);
 
 
         $equipos = Equipo::all();
