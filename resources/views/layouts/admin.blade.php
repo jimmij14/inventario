@@ -3,6 +3,7 @@
 
 <head>
     @include('partials.head')
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 </head>
 
 

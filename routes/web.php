@@ -21,7 +21,6 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\BajaController;
 
-
 Route::get('/', function () {
     return view('auth/login');
 });
