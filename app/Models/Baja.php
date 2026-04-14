@@ -12,8 +12,12 @@ class Baja extends Model
 
     protected $fillable = [
         'id_equipo_inventario',
+        'depreciacion',
+        'valor_baja',
         'fecha_baja',
+        'motivo',
         'descripcion',
+        'id_area',
         'id_usuario'
     ];
 
@@ -25,6 +29,11 @@ class Baja extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario');
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'id_area');
     }
 
 }

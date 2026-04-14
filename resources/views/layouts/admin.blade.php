@@ -3,6 +3,7 @@
 
 <head>
     @include('partials.head')
+    @stack('styles')
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 </head>
 
@@ -33,6 +34,7 @@
     @include('partials.scripts')
 
     @yield('scripts')
+    @stack('scripts')
     
 </body>
 </html>

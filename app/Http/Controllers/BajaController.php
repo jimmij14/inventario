@@ -17,6 +17,7 @@ class BajaController extends Controller
         $query = Baja::with([
             'inventario.equipo',
             'inventario.area',
+            'inventario.area.responsable',
             'usuario'
         ]);
 
@@ -47,11 +48,18 @@ class BajaController extends Controller
     public function store(Request $request)
     {
 
+        // buscar el inventario para obtener id_area
+        $inventario = EquipoInventario::find($request->id_equipo_inventario);
+
         // registrar la baja
         Baja::create([
             'id_equipo_inventario' => $request->id_equipo_inventario,
+            'depreciacion' => $request->depreciacion,
+            'valor_baja' => $request->valor_baja,
             'fecha_baja' => $request->fecha_baja,
+            'motivo' => $request->motivo,
             'descripcion' => $request->descripcion,
+            'id_area' => $inventario->id_area,
             'id_usuario' => Auth::id()
         ]);
 
@@ -59,8 +67,6 @@ class BajaController extends Controller
         $estadoBaja = EstadoEquipo::where('nombre_estado', 'Baja')->first();
 
         // actualizar estado del equipo en inventario
-        $inventario = EquipoInventario::find($request->id_equipo_inventario);
-
         $inventario->id_estado_equipo = $estadoBaja->id_estado_equipo;
         $inventario->save();
 

@@ -82,8 +82,12 @@
                                 <th>Equipo</th>
                                 <th>Área</th>
                                 <th>Fecha de baja</th>
+                                <th>Depreciación</th>
+                                <th>Valor Baja</th>
+                                <th>Motivo</th>
                                 <th>Descripción</th>
                                 <th>Usuario</th>
+                                <th>Responsable Área</th>
                                 <th>Acciones</th>
 
                             </tr>
@@ -113,11 +117,27 @@
                                 </td>
 
                                 <td>
+                                    {{ $baja->depreciacion }}
+                                </td>
+
+                                <td>
+                                    {{ $baja->valor_baja }}
+                                </td>
+
+                                <td>
+                                    {{ $baja->motivo }}
+                                </td>
+
+                                <td>
                                     {{ $baja->descripcion }}
                                 </td>
 
                                 <td>
                                     {{ $baja->usuario->name ?? '' }}
+                                </td>
+
+                                <td>
+                                    {{ $baja->inventario->area->responsable->nombre_completo ?? '' }}
                                 </td>
 
                                 <td>
@@ -148,7 +168,7 @@
                             @empty
 
                             <tr>
-                                <td colspan="5" class="text-center">
+                                <td colspan="11" class="text-center">
                                     No hay equipos dados de baja
                                 </td>
                             </tr>

@@ -474,6 +474,43 @@
 
                     <div class="form-group">
 
+                        <label>Depreciación</label>
+
+                        <input type="number"
+                               name="depreciacion"
+                               id="depreciacion"
+                               class="form-control"
+                               step="0.01"
+                               required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Valor Baja</label>
+
+                        <input type="number"
+                               name="valor_baja"
+                               id="valor_baja"
+                               class="form-control"
+                               step="0.01"
+                               required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Motivo</label>
+
+                        <textarea name="motivo"
+                                  id="motivo"
+                                  class="form-control"
+                                  required></textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
                         <label>Descripción</label>
 
                         <textarea name="descripcion"
@@ -516,6 +553,11 @@ function abrirModalBaja(id){
 
     let hoy = new Date().toISOString().split('T')[0];
     $('#fecha_baja').val(hoy);
+
+    $('#depreciacion').val('');
+    $('#valor_baja').val('');
+    $('#motivo').val('');
+    $('#descripcion').val('');
 
     $('#modalBaja').modal('show');
 
@@ -602,15 +644,7 @@ function nuevoInventario(){
 }
 
 
-$('#id_area').on('change', function(){
 
-    let abreviatura = $(this).find(':selected').data('abreviatura');
-
-    if(abreviatura){
-        $('#codigo_preview').val(abreviatura + '001');
-    }
-
-});
 
 </script>
 
@@ -626,6 +660,16 @@ $(document).ready(function(){
         dropdownParent: $('#modalInventario'),
         width:'100%',
         placeholder:"Seleccione..."
+    });
+
+    $('#id_area').on('change', function(){
+
+    let abreviatura = $(this).find(':selected').data('abreviatura');
+
+    if(abreviatura){
+        $('#codigo_preview').val(abreviatura + '001');
+    }
+
     });
 
 });
