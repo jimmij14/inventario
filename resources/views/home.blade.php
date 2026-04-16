@@ -75,21 +75,4 @@
                                 </div>
                             </div>
                         </div>
-=======
-<div class="row g-3 align-items-center">
-
 @endsection
-
-
-@push('styles')
-<style>
-.hover-card {
-    transition: all 0.3s ease;
-}
-
-.hover-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-</style>
-@endpush
