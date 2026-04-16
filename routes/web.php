@@ -21,7 +21,6 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\BajaController;
 
-
 Route::get('/', function () {
     return view('auth/login');
 });
@@ -53,6 +52,11 @@ route::resource('personal', PersonalController::class);
 Route::resource('areas', AreaController::class);
 Route::resource('equipos', EquipoController::class);
 
+
+Route::get('/inventario/{id}', [EquipoInventarioController::class, 'show'])
+    ->name('inventario.show');
+
+    
 Route::get('/inventario/codigos', [EquipoInventarioController::class, 'imprimirCodigos'])
     ->name('inventario.codigos');
 
@@ -72,3 +76,15 @@ Route::get('/bajas', [BajaController::class,'index'])->name('bajas.index');
 Route::put('/bajas/restaurar/{id}', [BajaController::class, 'restaurar'])
     ->name('bajas.restaurar');
 
+
+
+use App\Http\Controllers\MovimientoController;
+
+Route::get('/movimientos', [MovimientoController::class, 'index'])
+    ->name('movimientos.index');
+
+Route::post('/movimientos/buscar', [MovimientoController::class, 'buscarEquipo'])
+    ->name('movimientos.buscar');
+
+Route::post('/movimientos', [MovimientoController::class, 'store'])
+    ->name('movimientos.store');

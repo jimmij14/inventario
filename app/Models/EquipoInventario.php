@@ -68,5 +68,10 @@ class EquipoInventario extends Model
         return $this->hasOne(Baja::class, 'id_equipo_inventario');
     }
 
+    public function movimientos()
+    {
+        return $this->hasMany(DetalleMovimiento::class, 'id_equipo_inventario');
+    }
+
 
 }

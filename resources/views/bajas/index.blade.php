@@ -18,6 +18,59 @@
 
                 </div>
 
+                <form method="GET" action="{{ route('bajas.index') }}">
+
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+                        <input type="text"
+                        name="buscar"
+                        class="form-control"
+                        placeholder="Buscar código inventario"
+                        value="{{ request('buscar') }}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <select name="area" class="form-control">
+
+                            <option value="">Todas las áreas</option>
+
+                            @foreach($areas as $area)
+
+                                <option value="{{ $area->id_area }}"
+                                {{ request('area') == $area->id_area ? 'selected' : '' }}>
+
+                                    {{ $area->nombre_area }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <button class="btn btn-primary">
+                            <i class="mdi mdi-magnify"></i> Buscar
+                        </button>
+
+                        <a href="{{ route('bajas.index') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+
+                    </div>
+
+                </div>
+
+                </form>
+
+
+
+
+
+
+
                 <div class="table-responsive">
 
                     <table class="table table-centered table-nowrap mb-0">
@@ -105,6 +158,8 @@
                         </tbody>
 
                     </table>
+
+                    {{ $bajas->links() }}
 
                 </div>
 

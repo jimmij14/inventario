@@ -47,7 +47,7 @@ class EquipoInventarioController extends Controller
         }
 
         // EJECUTAR CONSULTA
-        $inventarios = $inventarios->get();
+        $inventarios = $inventarios->paginate(10);
 
 
         $equipos = Equipo::all();
@@ -229,6 +229,22 @@ class EquipoInventarioController extends Controller
         return $pdf->stream('codigos_inventario.pdf');
     }
 
+
+    public function show($id)
+    {
+
+        $inventario = EquipoInventario::with([
+            'equipo',
+            'area',
+            'estado',
+            'tipoIngreso',
+            'proveedor',
+            'user'
+        ])->findOrFail($id);
+
+        return view('inventario.show', compact('inventario'));
+
+    }
 
 
 }

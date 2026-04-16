@@ -77,7 +77,6 @@
                                 <th>Código</th>
                                 <th>Equipo</th>
                                 <th>Área</th>
-                                <th>Marca</th>
                                 <th>Estado</th>
                                 <th>Proveedor</th>
                                 <th>Tipo ingreso</th>
@@ -100,8 +99,6 @@
 
                                 <td>{{ $inv->area->nombre_area ?? '' }}</td>
 
-                                <td>{{ $inv->equipo->marca->nombre_marca ?? '' }}</td>
-
                                 <td>{{ $inv->estado->nombre_estado ?? '' }}</td>
 
                                 <td>{{ $inv->proveedor->nombre_comercial ?? '' }}</td>
@@ -112,7 +109,7 @@
                                 @if($inv->precio_compra)
                                     S/ {{ number_format($inv->precio_compra,2) }}
                                 @elseif($inv->tipoIngreso->nombre_tipo_ingreso == 'Donación')
-                                    Donación
+                                    Sin costo
                                 @else
                                     —
                                 @endif
@@ -137,6 +134,12 @@
                                 </td>
 
                                 <td>
+                                    <a href="{{ route('inventario.show', $inv->id_equipo_inventario) }}"class="btn btn-info btn-sm">
+
+                                        <i class="mdi mdi-eye"></i>
+
+                                    </a>
+
 
                                     <button class="btn btn-warning btn-sm"
                                         onclick="editarInventario(
@@ -184,6 +187,8 @@
                         </tbody>
 
                     </table>
+
+                    {{ $inventarios->links() }}
 
                 </div>
 
@@ -443,7 +448,7 @@
 
                 <div class="modal-header">
 
-                    <h5 class="modal-title">Dar de baja equipo</h5>
+                    <h5 class="modal-title">Dar de baja al equipo</h5>
 
                     <button type="button"
                             class="close"
