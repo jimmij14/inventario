@@ -1,8 +1,23 @@
 @extends('layouts.admin')
 
 @section('content')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Escritorio !</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb p-0 m-0">
+                    <li class="breadcrumb-item"><a href="#">sisInventario</a></li>
+                    <li class="breadcrumb-item"><a href="#">UDEA</a></li>
+                    <li class="breadcrumb-item active">Escritorio</li>
+                </ol>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
 
-<div class="row g-3 align-items-center">
+<div class="row">
 
     {{-- Equipos --}}
     <div class="col-md-3">
@@ -68,7 +83,7 @@
 
 <div class="row mt-4">
 
-    {{-- 📊 Equipos por Estado --}}
+    {{-- Equipos por Estado --}}
     <div class="col-md-6">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -78,7 +93,7 @@
         </div>
     </div>
 
-    {{-- 📊 Equipos por Área --}}
+    {{-- Equipos por Área --}}
     <div class="col-md-6">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -89,7 +104,6 @@
     </div>
 
 </div>
-
 @endsection
 
 @push('styles')
@@ -97,7 +111,6 @@
 .hover-card {
     transition: all 0.3s ease;
 }
-
 .hover-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -105,14 +118,12 @@
 </style>
 @endpush
 
-{{-- 📊 CHART.JS --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    // 📊 ESTADO
     const estadoLabels = @json($equiposPorEstado->pluck('estado'));
     const estadoData = @json($equiposPorEstado->pluck('total'));
 
@@ -137,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 📊 AREA
     const areaLabels = @json($equiposPorArea->pluck('area'));
     const areaData = @json($equiposPorArea->pluck('total'));
 

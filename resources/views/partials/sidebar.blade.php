@@ -43,9 +43,6 @@
                     </ul>
                 </li>
 
-
-
-
                 <!-- OPERACIONES -->
                 <li>
                     <a href="javascript: void(0);" class="waves-effect">
@@ -93,15 +90,22 @@
                     <ul class="nav-second-level" aria-expanded="false">
                         
                         <li><a href="{{ route('users.index') }}">Usuarios</a></li>
+                        <li><a href="{{ route('roles.index') }}">Roles</a></li>
 
 
                     </ul>
                 </li>
-
-
-
-
-
+                <li>
+                    <a class="waves-effect" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        <i class="ion-md-home"></i>
+                        <span> {{ __('Cerrar Sesión') }} </span>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                    </a>
+                </li>
             </ul>
 
         </div>
