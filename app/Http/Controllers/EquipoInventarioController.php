@@ -29,7 +29,11 @@ class EquipoInventarioController extends Controller
             'tipoIngreso',
             'proveedor',
             'user'
-        ])->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
+        ]);
+
+        if ($estadoBaja) {
+            $inventarios->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
+        }
 
         // BUSCAR POR CODIGO INVENTARIO
         if($request->filled('buscar')){
@@ -204,8 +208,11 @@ class EquipoInventarioController extends Controller
         // OBTENER ID DEL ESTADO BAJA
         $estadoBaja = EstadoEquipo::where('nombre_estado','Baja')->first();
 
-        $inventarios = EquipoInventario::query()
-            ->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
+        $inventarios = EquipoInventario::query();
+
+        if ($estadoBaja) {
+            $inventarios->where('id_estado_equipo','!=',$estadoBaja->id_estado_equipo);
+        }
 
         // FILTRO BUSCAR
         if($request->filled('buscar')){

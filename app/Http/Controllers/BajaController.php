@@ -47,9 +47,26 @@ class BajaController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'id_equipo_inventario' => 'required|exists:equipo_inventario,id_equipo_inventario',
+            'depreciacion' => 'required|numeric|min:0',
+            'valor_baja' => 'required|numeric|min:0',
+            'fecha_baja' => 'required|date',
+            'motivo' => 'required|string',
+            'descripcion' => 'required|string',
+        ]);
 
         // buscar el inventario para obtener id_area
-        $inventario = EquipoInventario::find($request->id_equipo_inventario);
+        $inventario = EquipoInventario::findOrFail($request->id_equipo_inventario);
+
+        // buscar estado "Baja"
+        $estadoBaja = EstadoEquipo::where('nombre_estado', 'Baja')->first();
+
+        if (!$estadoBaja) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No existe el estado Baja. Registre ese estado antes de dar de baja un equipo.');
+        }
 
         // registrar la baja
         Baja::create([
@@ -62,9 +79,6 @@ class BajaController extends Controller
             'id_area' => $inventario->id_area,
             'id_usuario' => Auth::id()
         ]);
-
-        // buscar estado "Baja"
-        $estadoBaja = EstadoEquipo::where('nombre_estado', 'Baja')->first();
 
         // actualizar estado del equipo en inventario
         $inventario->id_estado_equipo = $estadoBaja->id_estado_equipo;
@@ -81,8 +95,13 @@ class BajaController extends Controller
 
         $inventario = $baja->inventario;
 
-        // buscar estado ACTIVO
-        $estadoActivo = EstadoEquipo::where('nombre_estado', 'ACTIVO')->first();
+        // buscar estado Activo
+        $estadoActivo = EstadoEquipo::whereIn('nombre_estado', ['Activo', 'ACTIVO', 'activo'])->first();
+
+        if (!$estadoActivo) {
+            return redirect()->back()
+                ->with('error', 'No existe el estado Activo. Registre ese estado antes de restaurar un equipo.');
+        }
 
         // cambiar estado del equipo
         $inventario->id_estado_equipo = $estadoActivo->id_estado_equipo;
@@ -98,4 +117,3 @@ class BajaController extends Controller
 
 
 }
-

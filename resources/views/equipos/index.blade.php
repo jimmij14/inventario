@@ -10,15 +10,37 @@
 
             <div class="card-body">
 
-                <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
-                    <h4 class="header-title">Listado de Equipos</h4>
+                    <h4 class="header-title mb-2">Listado de Equipos</h4>
 
-                    <button class="btn btn-success" onclick="nuevoEquipo()">
-                        <i class="mdi mdi-plus"></i> Nuevo equipo
-                    </button>
+                    <div class="d-flex gap-2">
+
+                        <form method="GET" action="{{ route('equipos.index') }}" class="d-flex">
+                            <input type="text" 
+                                name="search" 
+                                value="{{ request('search') }}"
+                                class="form-control mr-2" 
+                                placeholder="Buscar equipo, marca o modelo...">
+
+                            <button class="btn btn-primary mr-2">
+                                Buscar
+                            </button>
+                        </form>
+
+                        <button class="btn btn-success" onclick="nuevoEquipo()">
+                            <i class="mdi mdi-plus"></i> Nuevo equipo
+                        </button>
+
+                    </div>
 
                 </div>
+
+                @if(request('search'))
+                    <div class="mb-2">
+                        Resultados para: <strong>{{ request('search') }}</strong>
+                    </div>
+                @endif
 
                 <div class="table-responsive">
 
@@ -93,7 +115,14 @@
 
                     </table>
 
-                </div>
+
+                    <div class="mt-3">
+                        {{ $equipos->appends(request()->query())->links() }}
+                    </div>
+
+                </div>  
+
+                
 
             </div>
 

@@ -6,6 +6,18 @@
 
     <div class="col-12">
 
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="card">
 
             <div class="card-body">
@@ -73,6 +85,7 @@
                 <div class="table-responsive">
 
                     <table id="tablaInventario" class="table table-centered table-nowrap mb-0">
+                        <thead>
                             <tr>
                                 <th>Código</th>
                                 <th>Equipo</th>
@@ -197,15 +210,12 @@
         </div>
 
     </div>
-    ```
-
     </div>
 
     <!-- MODAL -->
 
     <div class="modal fade" id="modalInventario" tabindex="-1">
 
-    ```
     <div class="modal-dialog">
 
         <div class="modal-content">

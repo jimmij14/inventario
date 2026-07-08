@@ -8,48 +8,88 @@ use App\Models\Modelo;
 use App\Models\Color;
 use App\Models\CategoriaEquipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Request as RequestFacade; // 👈 para página
 
 class EquipoController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $equipos = Equipo::with([
-            'marca',
-            'modelo',
-            'color',
-            'categoriaEquipo'
-        ])->get();
+        $page = $request->get('page', 1);
+        $search = $request->get('search'); // 👈 input del buscador
 
-        $marcas = Marca::all();
-        $modelos = Modelo::all();
-        $colores = Color::all();
-        $categorias = CategoriaEquipo::all();
+        // 🔥 clave única de cache (incluye búsqueda + página)
+        $cacheKey = "equipos_{$search}_page_{$page}";
 
-        return view('equipos.index',compact(
-            'equipos',
-            'marcas',
-            'modelos',
-            'colores',
-            'categorias'
+        $equipos = Cache::remember($cacheKey, 60, function () use ($search) {
+
+            $query = Equipo::with([
+                'marca:id_marca,nombre_marca',
+                'modelo:id_modelo,nombre_modelo',
+                'color:id_color,nombre_color',
+                'categoriaEquipo:id_categoria_equipo,nombre_categoria_equipo'
+            ])
+            ->select(
+                'id_equipo',
+                'nombre_equipo',
+                'serie',
+                'imagen',
+                'descripcion',
+                'id_marca',
+                'id_modelo',
+                'id_color',
+                'id_categoria_equipo'
+            );
+
+            // 🔎 FILTRO DE BÚSQUEDA
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nombre_equipo', 'like', "%{$search}%")
+                    ->orWhereHas('marca', function ($q2) use ($search) {
+                        $q2->where('nombre_marca', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('modelo', function ($q3) use ($search) {
+                        $q3->where('nombre_modelo', 'like', "%{$search}%");
+                    });
+                });
+            }
+
+            return $query->paginate(10);
+        });
+
+        // ⚡ catálogos (igual)
+        $marcas = Cache::remember('marcas', 60, fn() =>
+            Marca::select('id_marca','nombre_marca')->get()
+        );
+
+        $modelos = Cache::remember('modelos', 60, fn() =>
+            Modelo::select('id_modelo','nombre_modelo')->get()
+        );
+
+        $colores = Cache::remember('colores', 60, fn() =>
+            Color::select('id_color','nombre_color')->get()
+        );
+
+        $categorias = Cache::remember('categorias', 60, fn() =>
+            CategoriaEquipo::select('id_categoria_equipo','nombre_categoria_equipo')->get()
+        );
+
+        return view('equipos.index', compact(
+            'equipos','marcas','modelos','colores','categorias','search'
         ));
     }
 
     public function store(Request $request)
     {
-
         $rutaImagen = null;
 
         if($request->hasFile('imagen')){
-
             $imagen = $request->file('imagen');
-
-            $nombre = $request->nombre_equipo;
-
+            $nombre = Str::slug($request->nombre_equipo) ?: 'equipo';
             $nombreImagen = $nombre.'_'.time().'.'.$imagen->getClientOriginalExtension();
-
             $imagen->storeAs('equipos',$nombreImagen,'public');
-
             $rutaImagen = 'equipos/'.$nombreImagen;
         }
 
@@ -64,24 +104,28 @@ class EquipoController extends Controller
             'descripcion'=>$request->descripcion
         ]);
 
+        // 🔥 LIMPIAR CACHE PAGINACIÓN
+        Cache::flush();
+
+        // 🔥 limpiar catálogos
+        Cache::forget('marcas');
+        Cache::forget('modelos');
+        Cache::forget('colores');
+        Cache::forget('categorias');
+
         return redirect()->route('equipos.index');
+        
     }
 
     public function update(Request $request,$id)
     {
-
         $equipo = Equipo::findOrFail($id);
 
         if($request->hasFile('imagen')){
-
             $imagen = $request->file('imagen');
-
-            $nombre = $request->nombre_equipo;
-
+            $nombre = Str::slug($request->nombre_equipo) ?: 'equipo';
             $nombreImagen = $nombre.'_'.time().'.'.$imagen->getClientOriginalExtension();
-
             $imagen->storeAs('equipos',$nombreImagen,'public');
-
             $equipo->imagen = 'equipos/'.$nombreImagen;
         }
 
@@ -95,6 +139,9 @@ class EquipoController extends Controller
             'descripcion'=>$request->descripcion
         ]);
 
+        // 🔥 LIMPIAR CACHE PAGINACIÓN
+        Cache::flush();
+
         return redirect()->route('equipos.index');
     }
 
@@ -102,6 +149,9 @@ class EquipoController extends Controller
     {
         $equipo = Equipo::findOrFail($id);
         $equipo->delete();
+
+        // 🔥 LIMPIAR CACHE PAGINACIÓN
+        Cache::flush();
 
         return redirect()->route('equipos.index');
     }
