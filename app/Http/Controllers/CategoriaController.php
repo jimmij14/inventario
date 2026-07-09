@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoriaController extends Controller
 {
     // Mostrar lista de categorias
     public function index()
     {
-        $categorias = Categoria::all();
+        $categorias = Cache::remember('categorias_listado', 60, fn() => Categoria::all());
         return view('categorias.index', compact('categorias'));
     }
 
@@ -23,6 +24,8 @@ class CategoriaController extends Controller
         ]);
 
         Categoria::create($request->all());
+
+        Cache::forget('categorias_listado');
 
         return redirect()->route('categorias.index')
             ->with('success', 'Categoría creada correctamente');
@@ -39,6 +42,8 @@ class CategoriaController extends Controller
         $categoria = Categoria::findOrFail($id);
         $categoria->update($request->all());
 
+        Cache::forget('categorias_listado');
+
         return redirect()->route('categorias.index')
             ->with('success', 'Categoría actualizada correctamente');
     }
@@ -48,6 +53,8 @@ class CategoriaController extends Controller
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->delete();
+
+        Cache::forget('categorias_listado');
 
         return redirect()->route('categorias.index')
             ->with('success', 'Categoría eliminada correctamente');

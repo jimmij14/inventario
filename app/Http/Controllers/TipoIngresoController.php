@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TipoIngreso;
+use Illuminate\Support\Facades\Cache;
 
 class TipoIngresoController extends Controller
 {
     public function index()
     {
-        $tipos = TipoIngreso::all();
+        $tipos = Cache::remember('tipo_ingreso_listado', 60, fn() => TipoIngreso::all());
         return view('tipo_ingreso.index', compact('tipos'));
     }
 
@@ -19,6 +20,8 @@ class TipoIngresoController extends Controller
             'nombre_tipo_ingreso' => $request->nombre_tipo_ingreso,
             'descripcion' => $request->descripcion
         ]);
+
+        Cache::forget('tipo_ingreso_listado');
 
         return redirect()->route('tipo_ingreso.index');
     }
@@ -32,6 +35,8 @@ class TipoIngresoController extends Controller
             'descripcion' => $request->descripcion
         ]);
 
+        Cache::forget('tipo_ingreso_listado');
+
         return redirect()->route('tipo_ingreso.index');
     }
 
@@ -39,6 +44,8 @@ class TipoIngresoController extends Controller
     {
         $tipo = TipoIngreso::findOrFail($id);
         $tipo->delete();
+
+        Cache::forget('tipo_ingreso_listado');
 
         return redirect()->route('tipo_ingreso.index');
     }

@@ -11,7 +11,7 @@ class PersonalController extends Controller
 
     public function index()
     {
-        $personales = Personal::with('categoriaPersonal')->get();
+        $personales = Personal::with('categoriaPersonal')->paginate(10);
         $categorias = CategoriaPersonal::all();
 
         return view('personal.index', compact('personales','categorias'));

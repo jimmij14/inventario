@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\EstadoEquipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EstadoEquipoController extends Controller
 {
 
     public function index()
     {
-        $estados = EstadoEquipo::all();
+        $estados = Cache::remember('estado_equipo_listado', 60, fn() => EstadoEquipo::all());
         return view('estado_equipo.index', compact('estados'));
     }
 
@@ -18,6 +19,8 @@ class EstadoEquipoController extends Controller
     public function store(Request $request)
     {
         EstadoEquipo::create($request->all());
+
+        Cache::forget('estado_equipo_listado');
 
         return redirect()->route('estado_equipo.index');
     }
@@ -29,6 +32,8 @@ class EstadoEquipoController extends Controller
 
         $estado->update($request->all());
 
+        Cache::forget('estado_equipo_listado');
+
         return redirect()->route('estado_equipo.index');
     }
 
@@ -38,6 +43,8 @@ class EstadoEquipoController extends Controller
         $estado = EstadoEquipo::findOrFail($id);
 
         $estado->delete();
+
+        Cache::forget('estado_equipo_listado');
 
         return redirect()->route('estado_equipo.index');
     }

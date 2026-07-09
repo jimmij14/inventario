@@ -10,6 +10,7 @@ use App\Models\EstadoEquipo;
 use App\Models\TipoIngreso;
 use App\Models\Proveedor;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -58,8 +59,8 @@ class EquipoInventarioController extends Controller
         $areas = Area::all();
         //$estados = EstadoEquipo::all();//estados normales
         $estados = EstadoEquipo::where('nombre_estado','!=','Baja')->get();//excluye estado baja
-        $tiposIngreso = TipoIngreso::all();
-        $proveedores = Proveedor::all();
+        $tiposIngreso = Cache::remember('tipo_ingreso_listado', 60, fn() => TipoIngreso::all());
+        $proveedores = Cache::remember('proveedores_listado', 60, fn() => Proveedor::all());
 
         return view('inventario.index', compact(
             'inventarios',

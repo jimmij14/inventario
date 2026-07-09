@@ -17,47 +17,40 @@ class EquipoController extends Controller
 
     public function index(Request $request)
     {
-        $page = $request->get('page', 1);
         $search = $request->get('search'); // 👈 input del buscador
 
-        // 🔥 clave única de cache (incluye búsqueda + página)
-        $cacheKey = "equipos_{$search}_page_{$page}";
+        $query = Equipo::with([
+            'marca:id_marca,nombre_marca',
+            'modelo:id_modelo,nombre_modelo',
+            'color:id_color,nombre_color',
+            'categoriaEquipo:id_categoria_equipo,nombre_categoria_equipo'
+        ])
+        ->select(
+            'id_equipo',
+            'nombre_equipo',
+            'serie',
+            'imagen',
+            'descripcion',
+            'id_marca',
+            'id_modelo',
+            'id_color',
+            'id_categoria_equipo'
+        );
 
-        $equipos = Cache::remember($cacheKey, 60, function () use ($search) {
-
-            $query = Equipo::with([
-                'marca:id_marca,nombre_marca',
-                'modelo:id_modelo,nombre_modelo',
-                'color:id_color,nombre_color',
-                'categoriaEquipo:id_categoria_equipo,nombre_categoria_equipo'
-            ])
-            ->select(
-                'id_equipo',
-                'nombre_equipo',
-                'serie',
-                'imagen',
-                'descripcion',
-                'id_marca',
-                'id_modelo',
-                'id_color',
-                'id_categoria_equipo'
-            );
-
-            // 🔎 FILTRO DE BÚSQUEDA
-            if ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('nombre_equipo', 'like', "%{$search}%")
-                    ->orWhereHas('marca', function ($q2) use ($search) {
-                        $q2->where('nombre_marca', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('modelo', function ($q3) use ($search) {
-                        $q3->where('nombre_modelo', 'like', "%{$search}%");
-                    });
+        // 🔎 FILTRO DE BÚSQUEDA
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre_equipo', 'like', "%{$search}%")
+                ->orWhereHas('marca', function ($q2) use ($search) {
+                    $q2->where('nombre_marca', 'like', "%{$search}%");
+                })
+                ->orWhereHas('modelo', function ($q3) use ($search) {
+                    $q3->where('nombre_modelo', 'like', "%{$search}%");
                 });
-            }
+            });
+        }
 
-            return $query->paginate(10);
-        });
+        $equipos = $query->paginate(10);
 
         // ⚡ catálogos (igual)
         $marcas = Cache::remember('marcas', 60, fn() =>
@@ -104,9 +97,6 @@ class EquipoController extends Controller
             'descripcion'=>$request->descripcion
         ]);
 
-        // 🔥 LIMPIAR CACHE PAGINACIÓN
-        Cache::flush();
-
         // 🔥 limpiar catálogos
         Cache::forget('marcas');
         Cache::forget('modelos');
@@ -139,9 +129,6 @@ class EquipoController extends Controller
             'descripcion'=>$request->descripcion
         ]);
 
-        // 🔥 LIMPIAR CACHE PAGINACIÓN
-        Cache::flush();
-
         return redirect()->route('equipos.index');
     }
 
@@ -149,9 +136,6 @@ class EquipoController extends Controller
     {
         $equipo = Equipo::findOrFail($id);
         $equipo->delete();
-
-        // 🔥 LIMPIAR CACHE PAGINACIÓN
-        Cache::flush();
 
         return redirect()->route('equipos.index');
     }

@@ -41,7 +41,7 @@
                 @csrf
                 @method('DELETE')
 
-                <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminacion(this)"><i class="fa-solid fa-trash"></i> Delete</button>
             </form>
             @endcan
         </td>
@@ -50,5 +50,21 @@
 </table>
 
 {!! $roles->links('pagination::bootstrap-5') !!}
+
+<script>
+function confirmarEliminacion(boton){
+    Swal.fire({
+        title:'¿Estás seguro?',
+        text:'Esta acción no se puede deshacer',
+        type:'warning',
+        showCancelButton:true,
+        confirmButtonText:'Sí, eliminar'
+    }).then(function(result){
+        if(result.value){
+            boton.closest('form').submit();
+        }
+    });
+}
+</script>
 
 @endsection

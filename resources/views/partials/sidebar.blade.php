@@ -27,6 +27,8 @@
 
                         <li><a href="{{ route('categorias.index') }}">Categorías</a></li>
 
+                        <li><a href="{{ route('categoria_equipos.index') }}">Categorías de equipo</a></li>
+
                         <li><a href="{{ route('marcas.index') }}">Marcas</a></li>
 
                         <li><a href="{{ route('modelos.index') }}">Modelos</a></li>
@@ -38,7 +40,25 @@
                         <li><a href="{{ route('tipo_ingreso.index') }}">Tipo de ingreso</a></li>
 
                         <li><a href="{{ route('estado_equipo.index') }}">Estado del equipo</a></li>
-                        
+
+
+                    </ul>
+                </li>
+
+                <!-- ORGANIZACIÓN -->
+                <li>
+                    <a href="javascript: void(0);" class="waves-effect">
+                        <i class="ion-md-people"></i>
+                        <span> Organización </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+
+                        <li><a href="{{ route('areas.index') }}">Áreas</a></li>
+
+                        <li><a href="{{ route('personal.index') }}">Personal</a></li>
+
+                        <li><a href="{{ route('categoria_personal.index') }}">Categoría de personal</a></li>
 
                     </ul>
                 </li>

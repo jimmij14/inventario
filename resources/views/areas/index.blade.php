@@ -2,6 +2,18 @@
 
 @section('content')
 
+@if($errors->any())
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        title: 'Revisa los datos ingresados',
+        html: @json(implode('<br>', $errors->all())),
+        type: 'error'
+    });
+});
+</script>
+@endif
+
 <div class="row">
 
     <div class="col-12">
@@ -96,6 +108,10 @@
                         </tbody>
 
                     </table>
+
+                    <div class="mt-3">
+                        {{ $areas->links() }}
+                    </div>
 
                 </div>
 

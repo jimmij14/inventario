@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Color;
+use Illuminate\Support\Facades\Cache;
 
 class ColorController extends Controller
 {
 
     public function index()
     {
-        $colores = Color::all();
+        $colores = Cache::remember('colores_listado', 60, fn() => Color::all());
         return view('colores.index', compact('colores'));
     }
 
     public function store(Request $request)
     {
         Color::create($request->all());
+
+        Cache::forget('colores_listado');
+        Cache::forget('colores');
 
         return redirect()->route('colores.index')
             ->with('success','Color registrado correctamente');
@@ -27,6 +31,9 @@ class ColorController extends Controller
         $color = Color::findOrFail($id);
         $color->update($request->all());
 
+        Cache::forget('colores_listado');
+        Cache::forget('colores');
+
         return redirect()->route('colores.index')
             ->with('success','Color actualizado correctamente');
     }
@@ -35,6 +42,9 @@ class ColorController extends Controller
     {
         $color = Color::findOrFail($id);
         $color->delete();
+
+        Cache::forget('colores_listado');
+        Cache::forget('colores');
 
         return redirect()->route('colores.index')
             ->with('success','Color eliminado correctamente');

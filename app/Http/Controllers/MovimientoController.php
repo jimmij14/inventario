@@ -27,7 +27,7 @@ class MovimientoController extends Controller
             'areaDestino',
             'estadoAnterior',
             'estadoNuevo',
-            'detalles.equipo'
+            'detalles.equipo.equipo'
         ]);
 
         // FILTRO POR CODIGO DE EQUIPO

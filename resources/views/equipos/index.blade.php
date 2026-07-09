@@ -73,8 +73,10 @@
 
                                     @if($equipo->imagen)
                                         <a href="{{ asset('storage/'.$equipo->imagen) }}" target="_blank">
-                                        <img 
+                                        <img
                                         src="{{ asset('storage/'.$equipo->imagen) }}"
+                                        alt="{{ $equipo->nombre_equipo }}"
+                                        loading="lazy"
                                         style="width:120px;height:90px;object-fit:cover;border-radius:5px;">
                                         </a>
                                     @endif

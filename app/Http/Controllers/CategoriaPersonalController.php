@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriaPersonal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoriaPersonalController extends Controller
 {
 
     public function index()
     {
-        $categorias_personal = CategoriaPersonal::all();
+        $categorias_personal = Cache::remember('categoria_personal_listado', 60, fn() => CategoriaPersonal::all());
         return view('categoria_personal.index', compact('categorias_personal'));
     }
 
@@ -18,6 +19,8 @@ class CategoriaPersonalController extends Controller
     public function store(Request $request)
     {
         CategoriaPersonal::create($request->all());
+
+        Cache::forget('categoria_personal_listado');
 
         return redirect()->route('categoria_personal.index');
     }
@@ -29,6 +32,8 @@ class CategoriaPersonalController extends Controller
 
         $categoria->update($request->all());
 
+        Cache::forget('categoria_personal_listado');
+
         return redirect()->route('categoria_personal.index');
     }
 
@@ -38,6 +43,8 @@ class CategoriaPersonalController extends Controller
         $categoria = CategoriaPersonal::findOrFail($id);
 
         $categoria->delete();
+
+        Cache::forget('categoria_personal_listado');
 
         return redirect()->route('categoria_personal.index');
     }

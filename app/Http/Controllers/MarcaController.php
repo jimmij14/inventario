@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MarcaController extends Controller
 {
@@ -11,7 +12,7 @@ class MarcaController extends Controller
     // Mostrar marcas
     public function index()
     {
-        $marcas = Marca::all();
+        $marcas = Cache::remember('marcas_listado', 60, fn() => Marca::all());
         return view('marcas.index', compact('marcas'));
     }
 
@@ -24,6 +25,9 @@ class MarcaController extends Controller
         ]);
 
         Marca::create($request->all());
+
+        Cache::forget('marcas_listado');
+        Cache::forget('marcas');
 
         return redirect()->route('marcas.index');
     }
@@ -39,6 +43,9 @@ class MarcaController extends Controller
         $marca = Marca::findOrFail($id);
         $marca->update($request->all());
 
+        Cache::forget('marcas_listado');
+        Cache::forget('marcas');
+
         return redirect()->route('marcas.index');
     }
 
@@ -47,6 +54,9 @@ class MarcaController extends Controller
     {
         $marca = Marca::findOrFail($id);
         $marca->delete();
+
+        Cache::forget('marcas_listado');
+        Cache::forget('marcas');
 
         return redirect()->route('marcas.index');
     }

@@ -11,7 +11,7 @@ class AreaController extends Controller
 
     public function index()
     {
-        $areas = Area::with('responsable')->get();
+        $areas = Area::with('responsable')->paginate(10);
         $personales = Personal::all();
 
         return view('areas.index', compact('areas','personales'));

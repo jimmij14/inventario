@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proveedor;
+use Illuminate\Support\Facades\Cache;
 
 class ProveedorController extends Controller
 {
 
     public function index()
     {
-        $proveedores = Proveedor::all();
+        $proveedores = Cache::remember('proveedores_listado', 60, fn() => Proveedor::all());
         return view('proveedores.index', compact('proveedores'));
     }
 
@@ -27,6 +28,8 @@ class ProveedorController extends Controller
             'direccion' => $request->direccion,
             'descripcion' => $request->descripcion
         ]);
+
+        Cache::forget('proveedores_listado');
 
         return redirect()->route('proveedores.index');
     }
@@ -47,6 +50,8 @@ class ProveedorController extends Controller
             'descripcion' => $request->descripcion
         ]);
 
+        Cache::forget('proveedores_listado');
+
         return redirect()->route('proveedores.index');
 
     }
@@ -57,6 +62,8 @@ class ProveedorController extends Controller
 
         $proveedor = Proveedor::findOrFail($id);
         $proveedor->delete();
+
+        Cache::forget('proveedores_listado');
 
         return redirect()->route('proveedores.index');
 
