@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CategoriaController extends Controller
 {
@@ -52,4 +53,17 @@ class CategoriaController extends Controller
         return redirect()->route('categorias.index')
             ->with('success', 'Categoría eliminada correctamente');
     }
+
+    public function exportarPdf()
+{
+    $categorias = Categoria::all();
+
+    $pdf = Pdf::loadView('categorias.pdf', compact('categorias'));
+
+    return $pdf->stream('listado_categorias.pdf');
+
+
+    // Alternativa: si quieres que se descargue en vez de ver en el navegador:
+    // return $pdf->download('listado_categorias.pdf');
+}
 }

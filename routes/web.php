@@ -78,4 +78,7 @@ Route::post('/movimientos/buscar', [MovimientoController::class, 'buscarEquipo']
 
 Route::post('/movimientos', [MovimientoController::class, 'store'])
     ->name('movimientos.store');
+
+Route::get('/categorias/pdf', [CategoriaController::class, 'exportarPdf'])->name('categorias.pdf');
+
 });

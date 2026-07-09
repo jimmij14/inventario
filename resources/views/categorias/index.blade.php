@@ -12,6 +12,7 @@
                     <button class="btn btn-success" onclick="nuevaCategoria()">
                     <i class="mdi mdi-plus"></i> Nueva categoría
                     </button>
+                    <a href="{{ route('categorias.pdf') }}" class="btn btn-danger" target="_blank"><i class="icon-print"></i> Exportar a PDF</a>
                 </div>
 
                 <div class="table-responsive">
