@@ -78,4 +78,14 @@ Route::post('/movimientos/buscar', [MovimientoController::class, 'buscarEquipo']
 
 Route::post('/movimientos', [MovimientoController::class, 'store'])
     ->name('movimientos.store');
+
+Route::get('/categorias/pdf', [CategoriaController::class, 'exportarPdf'])->name('categorias.pdf');
+Route::get('/categoria_equipos/pdf', [CategoriaEquipoController::class, 'exportarPdf'])->name('categoria_equipos.pdf');
+Route::get('/marcas/pdf', [MarcaController::class, 'exportarPdf'])->name('marcas.pdf');
+Route::get('/modelos/pdf', [ModeloController::class, 'exportarPdf'])->name('modelos.pdf');
+Route::get('/colores/pdf', [ColorController::class, 'exportarPdf'])->name('colores.pdf');
+Route::get('/proveedores/pdf', [ProveedorController::class, 'exportarPdf'])->name('proveedores.pdf');
+Route::get('/tipo_ingreso/pdf', [TipoIngresoController::class, 'exportarPdf'])->name('tipo_ingreso.pdf');
+Route::get('/estado_equipo/pdf', [EstadoEquipoController::class, 'exportarPdf'])->name('estado_equipo.pdf');
+
 });

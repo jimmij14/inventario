@@ -21,9 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="header-title">Listado de Marcas</h4>
 
-                    <button class="btn btn-success" onclick="nuevaMarca()">
-                    <i class="mdi mdi-plus"></i> Nueva marca
-                    </button>
+                    <div class="d-flex" style="gap: 8px;">
+                        <button class="btn btn-success" onclick="nuevaMarca()">
+                        <i class="mdi mdi-plus"></i> Nueva marca
+                        </button>
+                        <a href="{{ route('marcas.pdf') }}" class="btn btn-danger" target="_blank"><i class="mdi mdi-file-pdf-box"></i> Exportar a PDF</a>
+                    </div>
                 </div>
 
                 <div class="table-responsive">

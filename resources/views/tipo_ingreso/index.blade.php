@@ -10,9 +10,12 @@
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="header-title">Listado de Tipos de Ingreso</h4>
 
-                    <button class="btn btn-success" onclick="nuevoTipoIngreso()">
-                        <i class="mdi mdi-plus"></i> Nuevo tipo ingreso
-                    </button>
+                    <div class="d-flex" style="gap: 8px;">
+                        <button class="btn btn-success" onclick="nuevoTipoIngreso()">
+                            <i class="mdi mdi-plus"></i> Nuevo tipo ingreso
+                        </button>
+                        <a href="{{ route('tipo_ingreso.pdf') }}" class="btn btn-danger" target="_blank"><i class="mdi mdi-file-pdf-box"></i> Exportar a PDF</a>
+                    </div>
                 </div>
 
                 <div class="table-responsive">

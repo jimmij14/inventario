@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Modelo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ModeloController extends Controller
 {
@@ -61,5 +62,23 @@ class ModeloController extends Controller
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo eliminado correctamente');
+    }
+
+    public function exportarPdf()
+    {
+        $modelos = Modelo::all();
+
+        $pdf = Pdf::loadView('modelos.pdf', compact('modelos'));
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_modelos.pdf');
     }
 }

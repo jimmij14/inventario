@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CategoriaController extends Controller
 {
@@ -58,5 +59,26 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias.index')
             ->with('success', 'Categoría eliminada correctamente');
+    }
+
+    public function exportarPdf()
+    {
+        $categorias = Categoria::all();
+
+        $pdf = Pdf::loadView('categorias.pdf', compact('categorias'));
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_categorias.pdf');
+
+        // Alternativa: si quieres que se descargue en vez de ver en el navegador:
+        // return $pdf->download('listado_categorias.pdf');
     }
 }

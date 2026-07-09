@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TipoIngreso;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TipoIngresoController extends Controller
 {
@@ -48,5 +49,23 @@ class TipoIngresoController extends Controller
         Cache::forget('tipo_ingreso_listado');
 
         return redirect()->route('tipo_ingreso.index');
+    }
+
+    public function exportarPdf()
+    {
+        $tipos = TipoIngreso::all();
+
+        $pdf = Pdf::loadView('tipo_ingreso.pdf', compact('tipos'));
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_tipo_ingreso.pdf');
     }
 }

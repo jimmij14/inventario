@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MarcaController extends Controller
 {
@@ -59,5 +60,23 @@ class MarcaController extends Controller
         Cache::forget('marcas');
 
         return redirect()->route('marcas.index');
+    }
+
+    public function exportarPdf()
+    {
+        $marcas = Marca::all();
+
+        $pdf = Pdf::loadView('marcas.pdf', compact('marcas'));
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_marcas.pdf');
     }
 }
