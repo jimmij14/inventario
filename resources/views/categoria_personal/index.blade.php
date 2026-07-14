@@ -10,9 +10,12 @@
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="header-title">Listado de Categorías de Personal</h4>
 
-                    <button class="btn btn-success" onclick="nuevaCategoriaPersonal()">
-                        <i class="mdi mdi-plus"></i> Nueva categoría
-                    </button>
+                    <div class="d-flex" style="gap: 8px;">
+                        <button class="btn btn-success" onclick="nuevaCategoriaPersonal()">
+                            <i class="mdi mdi-plus"></i> Nueva categoría
+                        </button>
+                        <a href="{{ route('categoria_personal.pdf') }}" class="btn btn-danger" target="_blank"><i class="mdi mdi-file-pdf-box"></i> Exportar a PDF</a>
+                    </div>
                 </div>
 
                 <div class="table-responsive">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Personal;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AreaController extends Controller
 {
@@ -53,6 +54,24 @@ class AreaController extends Controller
         $area->delete();
 
         return redirect()->route('areas.index');
+    }
+
+    public function exportarPdf()
+    {
+        $areas = Area::with('responsable')->get();
+
+        $pdf = Pdf::loadView('areas.pdf', compact('areas'));
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_areas.pdf');
     }
 
 }

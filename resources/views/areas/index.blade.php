@@ -26,9 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     <h4 class="header-title">Listado de Áreas</h4>
 
-                    <button class="btn btn-success" onclick="nuevaArea()">
-                        <i class="mdi mdi-plus"></i> Nueva área
-                    </button>
+                    <div class="d-flex" style="gap: 8px;">
+                        <button class="btn btn-success" onclick="nuevaArea()">
+                            <i class="mdi mdi-plus"></i> Nueva área
+                        </button>
+                        <a href="{{ route('areas.pdf') }}" class="btn btn-danger" target="_blank"><i class="mdi mdi-file-pdf-box"></i> Exportar a PDF</a>
+                    </div>
 
                 </div>
 

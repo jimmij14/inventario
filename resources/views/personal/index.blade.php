@@ -26,9 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     <h4 class="header-title">Listado de Personal</h4>
 
-                    <button class="btn btn-success" onclick="nuevoPersonal()">
-                        <i class="mdi mdi-plus"></i> Nuevo personal
-                    </button>
+                    <div class="d-flex" style="gap: 8px;">
+                        <button class="btn btn-success" onclick="nuevoPersonal()">
+                            <i class="mdi mdi-plus"></i> Nuevo personal
+                        </button>
+                        <a href="{{ route('personal.pdf') }}" class="btn btn-danger" target="_blank"><i class="mdi mdi-file-pdf-box"></i> Exportar a PDF</a>
+                    </div>
 
                 </div>
 

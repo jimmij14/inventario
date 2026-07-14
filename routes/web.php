@@ -87,5 +87,8 @@ Route::get('/colores/pdf', [ColorController::class, 'exportarPdf'])->name('color
 Route::get('/proveedores/pdf', [ProveedorController::class, 'exportarPdf'])->name('proveedores.pdf');
 Route::get('/tipo_ingreso/pdf', [TipoIngresoController::class, 'exportarPdf'])->name('tipo_ingreso.pdf');
 Route::get('/estado_equipo/pdf', [EstadoEquipoController::class, 'exportarPdf'])->name('estado_equipo.pdf');
+Route::get('/categoria_personal/pdf', [CategoriaPersonalController::class, 'exportarPdf'])->name('categoria_personal.pdf');
+Route::get('/areas/pdf', [AreaController::class, 'exportarPdf'])->name('areas.pdf');
+Route::get('/personal/pdf', [PersonalController::class, 'exportarPdf'])->name('personal.pdf');
 
 });

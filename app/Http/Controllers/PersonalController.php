@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Personal;
 use App\Models\CategoriaPersonal;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PersonalController extends Controller
 {
@@ -53,6 +54,24 @@ class PersonalController extends Controller
         $personal->delete();
 
         return redirect()->route('personal.index');
+    }
+
+    public function exportarPdf()
+    {
+        $personales = Personal::with('categoriaPersonal')->get();
+
+        $pdf = Pdf::loadView('personal.pdf', compact('personales'))->setPaper('a4', 'landscape');
+
+        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $text = "Página {$pageNumber} de {$pageCount}";
+            $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
+            $size = 9;
+            $x = $canvas->get_width() - $fontMetrics->get_text_width($text, $font, $size) - 40;
+            $y = $canvas->get_height() - 22;
+            $canvas->text($x, $y, $text, $font, $size, [0.4, 0.4, 0.4]);
+        });
+
+        return $pdf->stream('listado_personal.pdf');
     }
 
 }

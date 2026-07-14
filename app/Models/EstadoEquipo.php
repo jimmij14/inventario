@@ -14,4 +14,15 @@ class EstadoEquipo extends Model
         'nombre_estado',
         'descripcion'
     ];
+
+    // Compara sin importar mayúsculas/espacios, porque el nombre es editable desde Mantenimiento
+    public function scopeBaja($query)
+    {
+        return $query->whereRaw('LOWER(TRIM(nombre_estado)) = ?', ['baja']);
+    }
+
+    public function scopeSinBaja($query)
+    {
+        return $query->whereRaw('LOWER(TRIM(nombre_estado)) != ?', ['baja']);
+    }
 }
